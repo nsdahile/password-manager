@@ -7,9 +7,29 @@ class AccountTile extends StatelessWidget {
   AccountTile(this.account);
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(account.url ?? "NA"),
-      subtitle: Text(account.username ?? account.email ?? "NA"),
+    return Card(
+      child: ListTile(
+        title: Text(getTitle),
+        subtitle: Text(getSubstitle),
+      ),
     );
+  }
+
+  String get getTitle {
+    if (account.url == null || account.url.length == 0) return "NA";
+    return account.url;
+  }
+
+  String get getSubstitle {
+    // Send username if available
+    // else email if available
+    // else send NA
+    if (account.username == null || account.username.length == 0) {
+      if (account.email == null || account.email.length == 0) {
+        return "NA";
+      }
+      return account.email;
+    }
+    return account.username;
   }
 }

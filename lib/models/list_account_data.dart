@@ -27,6 +27,5 @@ class ListAccountData with ChangeNotifier {
     _accounts.add(newAccount);
 
     notifyListeners();
-    print(_accounts.length);
   }
 }
