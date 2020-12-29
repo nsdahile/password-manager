@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'models/list_account_data.dart';
+import 'providers/list_account_data.dart';
 
 import 'screens/list_accounts_screen.dart';
 import 'screens/add_account_screen.dart';

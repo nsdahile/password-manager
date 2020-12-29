@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/list_account_data.dart';
+import '../providers/list_account_data.dart';
 
 class AddAccountScreen extends StatelessWidget {
   static final routeName = 'add-account-screen';
@@ -109,7 +109,6 @@ class _AccountFromState extends State<AccountFrom> {
               'Entered details are not valid, Please enter valid details.',
               style: TextStyle(
                 color: Colors.red[600],
-                // fontSize: 16,
               ),
               textAlign: TextAlign.justify,
             ),
@@ -124,6 +123,7 @@ class _AccountFromState extends State<AccountFrom> {
         password: passwordControler.text,
         about: about,
       );
+      Navigator.of(context).pop();
     }
   }
 }
