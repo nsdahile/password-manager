@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ListAccountData(),
       child: MaterialApp(
-        title: 'Password Mannager',
+        title: 'Password Manager',
         theme: ThemeData(
           primaryColor: Colors.blue,
           accentColor: Colors.amber,

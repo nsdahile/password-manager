@@ -10,7 +10,7 @@ class ListAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Password Mannager')),
+      appBar: AppBar(title: Text('Password Manager')),
       body: AccountsList(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

@@ -56,8 +56,17 @@ class DBHelper {
     }
   }
 
-  static Future<void> update() async {
-    //TODO Complete update function of DBHelper
+  static Future<int> delete(DateTime date) async {
+    try {
+      var database = await DBHelper.openDatabase();
+
+      return await database.delete(DBHelper.tableName,
+          where: 'date = ?', whereArgs: [date.toIso8601String()]);
+    } on DatabaseException catch (error) {
+      throw error;
+    } catch (error) {
+      throw DatabaseException('Unable to delete account');
+    }
   }
 
   static Future<List<Map<String, dynamic>>> getAccountsFromDB() async {
@@ -65,7 +74,7 @@ class DBHelper {
       var database = await DBHelper.openDatabase();
       if (database == null) print('Database is null');
       List<Map<String, dynamic>> accounts =
-          await database.rawQuery('SELECT * FROM ${DBHelper.tableName}');
+          await database.query(DBHelper.tableName);
       return accounts;
     } on DatabaseException catch (error) {
       throw error;

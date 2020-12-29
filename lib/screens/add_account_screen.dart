@@ -104,13 +104,15 @@ class _AccountFromState extends State<AccountFrom> {
           (email == null || email.length == 0)) {
         Scaffold.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: Colors.amber[300],
             content: Text(
               'Entered details are not valid, Please enter valid details.',
-              style: TextStyle(
-                color: Colors.red[600],
-              ),
               textAlign: TextAlign.justify,
+            ),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
             ),
           ),
         );

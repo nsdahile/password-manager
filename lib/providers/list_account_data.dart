@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../models/account_data.dart';
 import '../helper/db_helper.dart';
@@ -25,8 +25,8 @@ class ListAccountData with ChangeNotifier {
       );
       return [..._accounts];
     } catch (error) {
-      //TODO: Perform error handeling
-      print('*********${error.massage}**********');
+      //if error occured then empty is returned. no data displayed.
+      return [];
     }
   }
 
@@ -63,6 +63,14 @@ class ListAccountData with ChangeNotifier {
     } catch (error) {
       //TODO: Handle Error
       print('**********${error.massage}**************');
+    }
+  }
+
+  Future<void> deleteAccount(int accountIndex) async {
+    try {
+      await DBHelper.delete(_accounts[accountIndex].date);
+    } catch (error) {
+      throw error;
     }
   }
 }

@@ -18,7 +18,7 @@ class AccountsList extends StatelessWidget {
         return ListView.builder(
           itemCount: accounts.length,
           itemBuilder: (BuildContext context, int index) {
-            return AccountTile(accounts[index]);
+            return AccountTile(accounts[index], index);
           },
         );
       },
