@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Password Manager',
         theme: ThemeData(
-          primaryColor: Colors.blue,
+          primaryColor: Colors.red,
           accentColor: Colors.amber,
         ),
         home: ListAccountScreen(),

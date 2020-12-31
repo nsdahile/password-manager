@@ -47,7 +47,7 @@ class DBHelper {
     try {
       var database = await DBHelper.openDatabase();
       var response = await database.insert(DBHelper.tableName, account,
-          conflictAlgorithm: sql.ConflictAlgorithm.abort);
+          conflictAlgorithm: sql.ConflictAlgorithm.replace);
       return response;
     } on DatabaseException catch (error) {
       throw (error);

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/account_data.dart';
+import '../../screens/show_account_details_screen.dart';
 import 'dismissible_background.dart';
 
+import '../../models/account_data.dart';
 import '../../providers/list_account_data.dart';
 
 class AccountTile extends StatefulWidget {
@@ -27,8 +28,16 @@ class _AccountTileState extends State<AccountTile> {
         child: ListTile(
           title: Text(getTitle),
           subtitle: Text(getSubstitle),
+          onTap: openShowAccountDetailsScreen,
         ),
       ),
+    );
+  }
+
+  void openShowAccountDetailsScreen() {
+    Navigator.of(context).pushNamed(
+      ShowAccountDetailsScreen.routeName,
+      arguments: widget.account,
     );
   }
 
