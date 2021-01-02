@@ -69,8 +69,25 @@ class ListAccountData with ChangeNotifier {
   Future<void> deleteAccount(int accountIndex) async {
     try {
       await DBHelper.delete(_accounts[accountIndex].date);
+      _accounts.removeAt(accountIndex);
+      notifyListeners();
     } catch (error) {
       throw error;
     }
+  }
+
+  List<List<String>> toNestedListOfString() {
+    List<List<String>> accountList = [];
+    _accounts.forEach((account) {
+      List<String> accountDataList = [];
+      accountDataList.add(account.url);
+      accountDataList.add(account.username);
+      accountDataList.add(account.email);
+      accountDataList.add(account.password);
+      accountDataList.add(account.about);
+      accountDataList.add(account.date.toIso8601String());
+      accountList.add(accountDataList);
+    });
+    return accountList;
   }
 }

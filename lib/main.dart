@@ -6,6 +6,7 @@ import 'providers/list_account_data.dart';
 import 'screens/list_accounts_screen.dart';
 import 'screens/add_account_screen.dart';
 import 'screens/show_account_details_screen.dart';
+import 'screens/export_backup_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           ShowAccountDetailsScreen.routeName: (context) =>
               ShowAccountDetailsScreen(),
           AddAccountScreen.routeName: (context) => AddAccountScreen(),
+          ExportBackupScreen.routeName: (context) => ExportBackupScreen(),
         },
       ),
     );
