@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import '../helper/backup_helper.dart';
 import '../providers/list_account_data.dart';
 
+import '../widgets/info_tile.dart';
+
 class ExportBackupScreen extends StatelessWidget {
   static final routeName = '/export-database-screen';
 
@@ -37,13 +39,7 @@ class _ExportBackupScreenBodyState extends State<ExportBackupScreenBody> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Export Location:'),
-              Expanded(child: Text(targetFolder))
-            ],
-          ),
+          InfoTile(label: 'Export Location', value: targetFolder),
           RaisedButton(
             onPressed: exportLocationPicker,
             child: Text('Select Folder'),
@@ -61,7 +57,7 @@ class _ExportBackupScreenBodyState extends State<ExportBackupScreenBody> {
     var massage = 'Export Successful';
     try {
       if (targetFolder != null || targetFolder.isNotEmpty) {
-        await BackupHelper.databaseBackup(
+        await BackupHelper.databaseExportBackup(
           targetFolderPath: targetFolder,
           accountList: Provider.of<ListAccountData>(context, listen: false)
               .toNestedListOfString(),

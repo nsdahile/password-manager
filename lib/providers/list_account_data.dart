@@ -10,24 +10,34 @@ class ListAccountData with ChangeNotifier {
     if (_accounts.length > 0) return [..._accounts];
     //featching account details from database
     try {
-      var accountsFromDB = await DBHelper.getAccountsFromDB();
-      accountsFromDB.forEach(
-        (account) => _accounts.add(
-          AccountData(
-            date: DateTime.parse(account['date']),
-            url: account['url'],
-            username: account['username'],
-            email: account['email'],
-            password: account['password'],
-            about: account['about'],
-          ),
-        ),
-      );
+      await refreshFromDB();
       return [..._accounts];
     } catch (error) {
       //if error occured then empty is returned. no data displayed.
       return [];
     }
+  }
+
+  Future<void> refreshFromDB() async {
+    _accounts = [];
+    var accountsFromDB = await DBHelper.getAccountsFromDB();
+    accountsFromDB.forEach(
+      (account) => _accounts.add(
+        AccountData(
+          date: DateTime.parse(account['date']),
+          url: account['url'],
+          username: account['username'],
+          email: account['email'],
+          password: account['password'],
+          about: account['about'],
+        ),
+      ),
+    );
+  }
+
+  Future<void> refreshFromDBNotifyListener() async {
+    await refreshFromDB();
+    notifyListeners();
   }
 
   Future<void> addAccount({

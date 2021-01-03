@@ -7,6 +7,7 @@ import 'screens/list_accounts_screen.dart';
 import 'screens/add_account_screen.dart';
 import 'screens/show_account_details_screen.dart';
 import 'screens/export_backup_screen.dart';
+import 'screens/import_backup_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Password Manager',
         theme: ThemeData(
-          primaryColor: Colors.red,
+          primaryColor: Colors.grey[800],
           accentColor: Colors.amber,
         ),
         home: ListAccountScreen(),
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
               ShowAccountDetailsScreen(),
           AddAccountScreen.routeName: (context) => AddAccountScreen(),
           ExportBackupScreen.routeName: (context) => ExportBackupScreen(),
+          ImportBackupScreen.routeName: (context) => ImportBackupScreen(),
         },
       ),
     );

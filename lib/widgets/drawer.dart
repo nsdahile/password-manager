@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/export_backup_screen.dart';
+import '../screens/import_backup_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -35,6 +36,10 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.download_rounded),
             title: Text('Import Backup'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed(ImportBackupScreen.routeName);
+            },
           ),
         ],
       ),

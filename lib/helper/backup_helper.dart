@@ -5,7 +5,7 @@ import 'package:csv/csv.dart';
 import 'package:path/path.dart' as path;
 
 class BackupHelper {
-  static Future<void> databaseBackup({
+  static Future<void> databaseExportBackup({
     @required String targetFolderPath,
     @required List<List<String>> accountList,
     String fileName = 'password-manager.csv',
@@ -23,5 +23,17 @@ class BackupHelper {
   static String accountListToCSV(List<List<String>> accountList) {
     String csv = ListToCsvConverter().convert(accountList);
     return csv;
+  }
+
+  static Future<List<List<dynamic>>> databaseImportBackup(
+      {@required String filePath}) async {
+    try {
+      final file = File(filePath);
+      String contents = await file.readAsString();
+      var contentList = CsvToListConverter().convert(contents);
+      return contentList;
+    } catch (e) {
+      throw e;
+    }
   }
 }

@@ -25,7 +25,8 @@ class InfoTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: Container(
         margin: const EdgeInsets.all(8.0),
-        height: 30,
+        constraints: BoxConstraints(minHeight: 30),
+        // height: 30,
         child: Row(
           children: [
             SizedBox(

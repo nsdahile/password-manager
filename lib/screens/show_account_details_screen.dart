@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../widgets/show_account_details_screen/info_tile.dart';
+import '../widgets/info_tile.dart';
 
 import '../models/account_data.dart';
 
