@@ -5,6 +5,7 @@ class AccountData {
   final String password;
   final DateTime date;
   final String about;
+  final String imageUrl;
 
   AccountData({
     this.url,
@@ -13,5 +14,6 @@ class AccountData {
     this.password,
     this.date,
     this.about,
+    this.imageUrl,
   });
 }

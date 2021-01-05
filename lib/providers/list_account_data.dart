@@ -30,6 +30,7 @@ class ListAccountData with ChangeNotifier {
           email: account['email'],
           password: account['password'],
           about: account['about'],
+          imageUrl: account['imageUrl'],
         ),
       ),
     );
@@ -46,6 +47,7 @@ class ListAccountData with ChangeNotifier {
     String email,
     String password,
     String about,
+    String imageUrl,
   }) async {
     var date = DateTime.now();
     try {
@@ -57,6 +59,7 @@ class ListAccountData with ChangeNotifier {
         email: email,
         password: password,
         about: about,
+        imageUrl: imageUrl,
       );
       //adding account to memory
       var newAccount = AccountData(
@@ -66,13 +69,13 @@ class ListAccountData with ChangeNotifier {
         email: email,
         password: password,
         about: about,
+        imageUrl: imageUrl,
       );
       _accounts.add(newAccount);
 
       notifyListeners();
     } catch (error) {
-      //TODO: Handle Error
-      print('**********${error.massage}**************');
+      throw error;
     }
   }
 
@@ -95,6 +98,7 @@ class ListAccountData with ChangeNotifier {
       accountDataList.add(account.email);
       accountDataList.add(account.password);
       accountDataList.add(account.about);
+      accountDataList.add(account.imageUrl);
       accountDataList.add(account.date.toIso8601String());
       accountList.add(accountDataList);
     });

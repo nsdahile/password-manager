@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../helper/url_helper.dart';
+
 import 'passwordtile.dart';
 
 class InfoTile extends StatelessWidget {
@@ -55,10 +57,7 @@ class InfoTile extends StatelessWidget {
   }
 
   void _launchURL(BuildContext context) async {
-    var url = value;
-    if (!url.startsWith('http')) {
-      url = 'https://' + url;
-    }
+    var url = UrlHellper.correctUrl(value);
     if (await canLaunch(url)) {
       await launch(url);
     } else {

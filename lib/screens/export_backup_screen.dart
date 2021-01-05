@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
-import 'package:folder_picker/folder_picker.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -81,21 +80,17 @@ class _ExportBackupScreenBodyState extends State<ExportBackupScreenBody> {
       var permissionStatus = await Permission.storage.request();
       if (permissionStatus != PermissionStatus.granted) return null;
     }
-    //after having permission
-    await Navigator.of(context).push<FolderPickerPage>(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return FolderPickerPage(
-            rootDirectory: Directory('/storage/emulated/0/'),
-            action: (BuildContext context, Directory folder) async {
-              setState(() {
-                targetFolder = folder.path;
-              });
-              Navigator.of(context).pop();
-            },
-          );
-        },
-      ),
+
+    String path = await FilesystemPicker.open(
+      title: 'Save to folder',
+      context: context,
+      rootDirectory: Directory('/storage/emulated/0/'),
+      fsType: FilesystemType.folder,
+      pickText: 'Save file to this folder',
+      folderIconColor: Colors.teal,
     );
+    setState(() {
+      targetFolder = path;
+    });
   }
 }

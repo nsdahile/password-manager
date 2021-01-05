@@ -1,131 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:password_manager/helper/account_image_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/list_account_data.dart';
+import '../helper/url_helper.dart';
 
-class AddAccountScreen extends StatelessWidget {
+import '../widgets/add_account_screen/add_account_form.dart';
+import '../widgets/account_image.dart';
+
+class AddAccountScreen extends StatefulWidget {
   static final routeName = 'add-account-screen';
+  @override
+  _AddAccountScreenState createState() => _AddAccountScreenState();
+}
+
+class _AddAccountScreenState extends State<AddAccountScreen> {
+  String imageUrl = '';
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Account'),
-      ),
-      body: AccountFrom(),
-    );
-  }
-}
-
-class AccountFrom extends StatefulWidget {
-  @override
-  _AccountFromState createState() => _AccountFromState();
-}
-
-class _AccountFromState extends State<AccountFrom> {
-  final formKey = GlobalKey<FormState>();
-  final passwordControler = TextEditingController();
-  String url;
-  String username;
-  String email;
-  String about;
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: SingleChildScrollView(
-        child: Column(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Website Url',
-              ),
-              keyboardType: TextInputType.url,
-              textInputAction: TextInputAction.next,
-              validator: (value) {
-                if (value.isEmpty) return null;
-                if (!value.contains('.')) return "Please enter valid url";
-                return null;
-              },
-              onSaved: (newValue) => url = newValue.trim(),
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Username'),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              onSaved: (newValue) => username = newValue.trim(),
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              validator: (value) {
-                if (value.isEmpty) return null;
-                if (!value.contains('@') || !value.contains('.'))
-                  return 'Please enter valid  email';
-                return null;
-              },
-              onSaved: (newValue) => email = newValue,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Password'),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              obscureText: true,
-              controller: passwordControler,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Confirm Password'),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              obscureText: true,
-              validator: (value) {
-                if (passwordControler.text != value)
-                  return "Password does not match";
-                return null;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'About'),
-              onSaved: (newValue) => about = newValue,
-            ),
-            RaisedButton(child: Text('Save'), onPressed: save)
+            isLoading
+                ? Container(
+                    child: CircularProgressIndicator(),
+                    padding: EdgeInsets.all(10),
+                    height: 40,
+                    width: 40,
+                  )
+                : AccountImage(imageUrl),
+            Text('Add Account'),
           ],
         ),
       ),
+      body: AddAccountFrom(setAccountIcon, saveAccount),
     );
   }
 
-  void save() {
-    if (formKey.currentState.validate()) {
-      formKey.currentState.save();
-      if ((url == null || url.length == 0) &&
-          (username == null || username.length == 0) &&
-          (email == null || email.length == 0)) {
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Entered details are not valid, Please enter valid details.',
-              textAlign: TextAlign.justify,
-            ),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
-            ),
-          ),
-        );
-        return;
-      }
+  void setAccountIcon(String webUrl) async {
+    setState(() => isLoading = true);
+    webUrl = UrlHellper.correctUrl(webUrl);
+
+    try {
+      var url = await AccountImageHelper.getIcon(webUrl);
+      imageUrl = url;
+    } catch (err) {
+      //error from account image helper
+      imageUrl = '';
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
+  Future<void> saveAccount({
+    String url,
+    String username,
+    String email,
+    String password,
+    String about,
+  }) async {
+    try {
       Provider.of<ListAccountData>(context, listen: false).addAccount(
         url: url,
         username: username,
         email: email,
-        password: passwordControler.text,
+        password: password,
         about: about,
+        imageUrl: imageUrl,
       );
-      Navigator.of(context).pop();
+    } catch (e) {
+      throw e;
     }
   }
 }

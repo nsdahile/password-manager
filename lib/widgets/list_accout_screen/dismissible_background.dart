@@ -4,13 +4,17 @@ class DismissibleBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           deleteIcon,
         ],
       ),
-      color: Colors.red,
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.circular(10),
+      ),
     );
   }
 

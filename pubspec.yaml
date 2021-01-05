@@ -36,9 +36,10 @@ dependencies:
   url_launcher: ^5.7.10
   csv: ^4.1.0
   permission_handler: ^5.0.1+1
-  folder_picker: ^0.3.0
+  filesystem_picker: ^1.0.3
   flutter_document_picker: ^4.0.0
-
+  favicon: ^1.0.13
+  cached_network_image: ^2.5.0
   
 dev_dependencies:
   flutter_test:

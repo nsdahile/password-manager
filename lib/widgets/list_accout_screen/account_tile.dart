@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../screens/show_account_details_screen.dart';
+import '../../widgets/account_image.dart';
 import 'dismissible_background.dart';
 
 import '../../models/account_data.dart';
@@ -26,6 +27,7 @@ class _AccountTileState extends State<AccountTile> {
       onDismissed: deleteAccount,
       child: Card(
         child: ListTile(
+          leading: AccountImage(widget.account.imageUrl),
           title: Text(getTitle),
           subtitle: Text(getSubstitle),
           onTap: openShowAccountDetailsScreen,

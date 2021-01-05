@@ -18,7 +18,7 @@ class DBHelper {
         onCreate: (db, version) async {
           print('Creating new table');
           db.execute(
-              'CREATE TABLE ${DBHelper.tableName} (date TEXT PRIMARY KEY, url TEXT, username TEXT, email TEXT, password TEXT, about TEXT)');
+              'CREATE TABLE ${DBHelper.tableName} (date TEXT PRIMARY KEY, url TEXT, username TEXT, email TEXT, password TEXT, about TEXT, imageUrl TEXT)');
         },
       );
 
@@ -35,6 +35,7 @@ class DBHelper {
     String email,
     String password,
     String about,
+    String imageUrl,
   }) async {
     var account = {
       'date': date.toIso8601String(), //Primary key
@@ -43,6 +44,7 @@ class DBHelper {
       'email': email ?? '',
       'password': password ?? '',
       'about': about ?? '',
+      'imageUrl': imageUrl ?? '',
     };
     try {
       var database = await DBHelper.openDatabase();
@@ -72,7 +74,7 @@ class DBHelper {
   static Future<List<Map<String, dynamic>>> getAccountsFromDB() async {
     try {
       var database = await DBHelper.openDatabase();
-      if (database == null) print('Database is null');
+      if (database == null) throw DatabaseException('Unable to open database.');
       List<Map<String, dynamic>> accounts =
           await database.query(DBHelper.tableName);
       return accounts;

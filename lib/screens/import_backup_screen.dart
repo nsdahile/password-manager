@@ -68,7 +68,8 @@ class _ImportBackupScreenBodyState extends State<ImportBackupScreenBody> {
             email: accountList[2],
             password: accountList[3],
             about: accountList[4],
-            date: DateTime.parse(accountList[5]),
+            imageUrl: accountList[5],
+            date: DateTime.parse(accountList[6]),
           );
         });
         //notifying all accounts list listening screens

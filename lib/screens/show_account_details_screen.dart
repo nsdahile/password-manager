@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../widgets/info_tile.dart';
+import '../widgets/account_image.dart';
 
 import '../models/account_data.dart';
 
@@ -13,7 +14,13 @@ class ShowAccountDetailsScreen extends StatelessWidget {
     final account = ModalRoute.of(context).settings.arguments as AccountData;
     return Scaffold(
       appBar: AppBar(
-        title: Text(account.url.toUpperCase()),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AccountImage(account.imageUrl),
+            Text(account.url.toUpperCase()),
+          ],
+        ),
       ),
       body: Card(
         child: ListView(

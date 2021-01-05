@@ -7,7 +7,9 @@
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" /> 
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="password_manager"
