@@ -14,7 +14,13 @@ class _PasswordTileState extends State<PasswordTile> {
     return Row(
       children: [
         Expanded(
-          child: Text(getValue),
+          child: Text(
+            getValue,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
         ),
         IconButton(
           icon: Icon(

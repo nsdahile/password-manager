@@ -34,20 +34,26 @@ class _ExportBackupScreenBodyState extends State<ExportBackupScreenBody> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          InfoTile(label: 'Export Location', value: targetFolder),
-          RaisedButton(
-            onPressed: exportLocationPicker,
-            child: Text('Select Folder'),
-          ),
-          RaisedButton(
-            onPressed: exportBackup,
-            child: Text('Export Backup'),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 15,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            InfoTile(label: 'Export Location', value: targetFolder),
+            RaisedButton(
+              onPressed: exportLocationPicker,
+              child: Text('Select Folder'),
+            ),
+            RaisedButton(
+              onPressed: exportBackup,
+              child: Text('Export Backup'),
+            ),
+          ],
+        ),
       ),
     );
   }

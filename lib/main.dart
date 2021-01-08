@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +21,21 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Password Manager',
         theme: ThemeData(
-          primaryColor: Colors.grey[800],
-          accentColor: Colors.amber,
-        ),
+            primaryColor: Colors.grey[800],
+            accentColor: Colors.amber,
+            appBarTheme: ThemeData.light().appBarTheme.copyWith(
+                  textTheme: TextTheme(
+                    headline6: TextStyle(
+                      fontFamily: 'Lobster',
+                      fontSize: 25,
+                    ),
+                  ),
+                  centerTitle: true,
+                ),
+            buttonTheme: ButtonThemeData(
+              buttonColor: Colors.amber,
+              textTheme: ButtonTextTheme.primary,
+            )),
         home: ListAccountScreen(),
         routes: {
           ShowAccountDetailsScreen.routeName: (context) =>

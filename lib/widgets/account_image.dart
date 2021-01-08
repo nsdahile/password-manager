@@ -25,7 +25,7 @@ class AccountImage extends StatelessWidget {
   Icon get accountIcon {
     return Icon(
       Icons.account_circle_outlined,
-      color: Colors.white,
+      size: 40,
     );
   }
 }

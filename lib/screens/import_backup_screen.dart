@@ -34,19 +34,27 @@ class _ImportBackupScreenBodyState extends State<ImportBackupScreenBody> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        children: [
-          InfoTile(label: 'File location', value: filePath),
-          InfoTile(label: 'File name', value: fileName),
-          RaisedButton(
-            onPressed: pickFile,
-            child: Text('Select File'),
-          ),
-          RaisedButton(
-            onPressed: importBackup,
-            child: Text('Import Backup'),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 15,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            InfoTile(label: 'File location', value: filePath),
+            InfoTile(label: 'File name', value: fileName),
+            RaisedButton(
+              onPressed: pickFile,
+              child: Text('Select File'),
+            ),
+            RaisedButton(
+              onPressed: importBackup,
+              child: Text('Import Backup'),
+            ),
+          ],
+        ),
       ),
     );
   }

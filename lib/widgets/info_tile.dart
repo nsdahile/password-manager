@@ -33,7 +33,14 @@ class InfoTile extends StatelessWidget {
           children: [
             SizedBox(
               width: 130,
-              child: Text(label + ':'),
+              child: Text(
+                label + ':',
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
             ),
             Expanded(
               child: _getValue,
@@ -45,7 +52,14 @@ class InfoTile extends StatelessWidget {
   }
 
   Widget get _getValue {
-    if (!isPassword) return Text(value);
+    if (!isPassword)
+      return Text(
+        value,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      );
     return PasswordTile(value);
   }
 
@@ -63,7 +77,9 @@ class InfoTile extends StatelessWidget {
     } else {
       Scaffold.of(context).showSnackBar(
         SnackBar(
-          content: Text('Unable to launch $value'),
+          content: Text(
+            'Unable to launch $value',
+          ),
           behavior: SnackBarBehavior.floating,
         ),
       );

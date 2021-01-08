@@ -28,7 +28,13 @@ class _AccountTileState extends State<AccountTile> {
       child: Card(
         child: ListTile(
           leading: AccountImage(widget.account.imageUrl),
-          title: Text(getTitle),
+          title: Text(
+            getTitle.toUpperCase(),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           subtitle: Text(getSubstitle),
           onTap: openShowAccountDetailsScreen,
         ),

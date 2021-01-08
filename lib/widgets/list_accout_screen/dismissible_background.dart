@@ -22,7 +22,11 @@ class DismissibleBackground extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: Icon(Icons.delete_forever_sharp, size: 30, color: Colors.white70),
+      child: Icon(
+        Icons.delete,
+        size: 30,
+        color: Colors.white70,
+      ),
     );
   }
 }
