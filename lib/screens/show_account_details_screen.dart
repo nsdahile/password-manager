@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../screens/add_account_screen.dart';
 import '../widgets/info_tile.dart';
 import '../widgets/account_image.dart';
 
@@ -11,16 +12,30 @@ class ShowAccountDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final account = ModalRoute.of(context).settings.arguments as AccountData;
+    var account = ModalRoute.of(context).settings.arguments as AccountData;
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AccountImage(account.imageUrl),
-            Text(account.url.toUpperCase()),
-          ],
+        title: FittedBox(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AccountImage(account.imageUrl),
+              Text(account.url.toUpperCase()),
+            ],
+          ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+            onPressed: () => Navigator.of(context).pushNamed(
+              AddAccountScreen.routeName,
+              arguments: account,
+            ),
+          ),
+        ],
       ),
       body: Card(
         child: ListView(
@@ -39,7 +54,7 @@ class ShowAccountDetailsScreen extends StatelessWidget {
             ),
             InfoTile(label: 'About', value: getValue(account.about)),
             InfoTile(
-              label: 'Date of creation',
+              label: 'Last Update',
               value: DateFormat.yMMMEd().format(account.date),
             ),
           ],

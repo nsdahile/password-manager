@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../models/account_data.dart';
+
 import 'add_account_screen.dart';
 
 import '../widgets/list_accout_screen/accounts_list.dart';
@@ -16,8 +18,11 @@ class ListAccountScreen extends StatelessWidget {
       body: AccountsList(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () =>
-            Navigator.pushNamed(context, AddAccountScreen.routeName),
+        onPressed: () => Navigator.pushNamed(
+          context,
+          AddAccountScreen.routeName,
+          arguments: AccountData(),
+        ),
       ),
     );
   }

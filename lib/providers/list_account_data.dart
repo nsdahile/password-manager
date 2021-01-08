@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 
 import '../models/account_data.dart';
@@ -7,11 +9,11 @@ class ListAccountData with ChangeNotifier {
   List<AccountData> _accounts = [];
 
   Future<List<AccountData>> getAccounts() async {
-    if (_accounts.length > 0) return [..._accounts];
+    if (_accounts.length > 0) return UnmodifiableListView(_accounts);
     //featching account details from database
     try {
       await refreshFromDB();
-      return [..._accounts];
+      return UnmodifiableListView(_accounts);
     } catch (error) {
       //if error occured then empty is returned. no data displayed.
       return [];
@@ -22,7 +24,8 @@ class ListAccountData with ChangeNotifier {
     _accounts = [];
     var accountsFromDB = await DBHelper.getAccountsFromDB();
     accountsFromDB.forEach(
-      (account) => _accounts.add(
+      (account) => _accounts.insert(
+        0,
         AccountData(
           date: DateTime.parse(account['date']),
           url: account['url'],
@@ -71,11 +74,30 @@ class ListAccountData with ChangeNotifier {
         about: about,
         imageUrl: imageUrl,
       );
-      _accounts.add(newAccount);
+      _accounts.insert(0, newAccount);
 
       notifyListeners();
     } catch (error) {
       throw error;
+    }
+  }
+
+  Future<void> updateAccount(
+      AccountData oldAccount, AccountData newAccount) async {
+    try {
+      await addAccount(
+        url: newAccount.url,
+        username: newAccount.username,
+        email: newAccount.email,
+        password: newAccount.password,
+        about: newAccount.about,
+        imageUrl: newAccount.imageUrl,
+      );
+      var deleteAccountIndex =
+          _accounts.indexWhere((account) => account.date == oldAccount.date);
+      await deleteAccount(deleteAccountIndex);
+    } catch (e) {
+      throw e;
     }
   }
 

@@ -1,27 +1,57 @@
 import 'package:flutter/material.dart';
 
+import '../../models/account_data.dart';
+
 class AddAccountFrom extends StatefulWidget {
   final Function setAccountIcon;
   final Function saveAccount;
-  AddAccountFrom(this.setAccountIcon, this.saveAccount);
+  final Function updateAccount;
+  final AccountData currentUserAccount;
+  AddAccountFrom({
+    @required this.setAccountIcon,
+    @required this.saveAccount,
+    @required this.updateAccount,
+    @required this.currentUserAccount,
+  });
   @override
   _AddAccountFromState createState() => _AddAccountFromState();
 }
 
 class _AddAccountFromState extends State<AddAccountFrom> {
   final formKey = GlobalKey<FormState>();
+  final urlControler = TextEditingController();
+  final usernameControler = TextEditingController();
+  final emailControler = TextEditingController();
   final passwordControler = TextEditingController();
-  final websiteUrlControler = TextEditingController();
+  final confirmPasswordControler = TextEditingController();
+  final aboutControler = TextEditingController();
+  var isUpdate = false;
   var tryedToSetImage = false;
-  String url;
-  String username;
-  String email;
-  String about;
+
+  @override
+  void initState() {
+    super.initState();
+    urlControler.text = widget.currentUserAccount.url;
+    usernameControler.text = widget.currentUserAccount.username;
+    emailControler.text = widget.currentUserAccount.email;
+    passwordControler.text = widget.currentUserAccount.password;
+    confirmPasswordControler.text = passwordControler.text;
+    aboutControler.text = widget.currentUserAccount.about;
+    if (widget.currentUserAccount.imageUrl != null &&
+        widget.currentUserAccount.imageUrl.isNotEmpty) {
+      tryedToSetImage = true;
+    }
+    if (!isFormEmpty()) isUpdate = true;
+  }
 
   @override
   void dispose() {
+    urlControler.dispose();
+    usernameControler.dispose();
+    emailControler.dispose();
     passwordControler.dispose();
-    websiteUrlControler.dispose();
+    confirmPasswordControler.dispose();
+    aboutControler.dispose();
     super.dispose();
   }
 
@@ -40,7 +70,7 @@ class _AddAccountFromState extends State<AddAccountFrom> {
                   labelText: 'Website Url',
                   icon: Icon(Icons.language),
                 ),
-                controller: websiteUrlControler,
+                controller: urlControler,
                 keyboardType: TextInputType.url,
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (value) {
@@ -52,22 +82,22 @@ class _AddAccountFromState extends State<AddAccountFrom> {
                   if (!value.contains('.')) return "Please enter valid url";
                   return null;
                 },
-                onSaved: (newValue) => url = newValue.trim(),
               ),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Username',
                   icon: Icon(Icons.account_circle),
                 ),
+                controller: usernameControler,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
-                onSaved: (newValue) => username = newValue.trim(),
               ),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Email',
                   icon: Icon(Icons.email),
                 ),
+                controller: emailControler,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
@@ -76,7 +106,6 @@ class _AddAccountFromState extends State<AddAccountFrom> {
                     return 'Please enter valid  email';
                   return null;
                 },
-                onSaved: (newValue) => email = newValue,
               ),
               TextFormField(
                 decoration: InputDecoration(
@@ -93,6 +122,7 @@ class _AddAccountFromState extends State<AddAccountFrom> {
                   labelText: 'Confirm Password',
                   icon: Icon(Icons.vpn_key),
                 ),
+                controller: confirmPasswordControler,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 obscureText: true,
@@ -107,11 +137,12 @@ class _AddAccountFromState extends State<AddAccountFrom> {
                   labelText: 'About',
                   icon: Icon(Icons.short_text),
                 ),
-                onSaved: (newValue) => about = newValue,
+                controller: aboutControler,
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: RaisedButton(child: Text('Save'), onPressed: save),
+                child: RaisedButton(
+                    child: Text(isUpdate ? 'Update' : 'Save'), onPressed: save),
               ),
             ],
           ),
@@ -120,12 +151,20 @@ class _AddAccountFromState extends State<AddAccountFrom> {
     );
   }
 
+  bool isFormEmpty() {
+    if ((urlControler.text == null || urlControler.text.length == 0) &&
+        (usernameControler.text == null ||
+            usernameControler.text.length == 0) &&
+        (emailControler.text == null || emailControler.text.length == 0)) {
+      return true;
+    }
+    return false;
+  }
+
   void save() async {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      if ((url == null || url.length == 0) &&
-          (username == null || username.length == 0) &&
-          (email == null || email.length == 0)) {
+      if (isFormEmpty()) {
         Scaffold.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -142,17 +181,33 @@ class _AddAccountFromState extends State<AddAccountFrom> {
         );
         return;
       }
-      if (!tryedToSetImage) {
-        await widget.setAccountIcon(websiteUrlControler.text);
+      if (!tryedToSetImage ||
+          widget.currentUserAccount.url != urlControler.text) {
+        await widget.setAccountIcon(urlControler.text);
       }
       try {
-        await widget.saveAccount(
-          url: url,
-          username: username,
-          email: email,
-          password: passwordControler.text,
-          about: about,
-        );
+        if (isUpdate) {
+          await widget.updateAccount(
+            oldAccount: widget.currentUserAccount,
+            url: urlControler.text,
+            username: usernameControler.text,
+            email: emailControler.text,
+            password: passwordControler.text,
+            about: aboutControler.text,
+          );
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        } else {
+          //creating new account
+          await widget.saveAccount(
+            url: urlControler.text,
+            username: usernameControler.text,
+            email: emailControler.text,
+            password: passwordControler.text,
+            about: aboutControler.text,
+          );
+          Navigator.of(context).pop();
+        }
       } catch (err) {
         Scaffold.of(context).showSnackBar(
           SnackBar(
@@ -169,7 +224,6 @@ class _AddAccountFromState extends State<AddAccountFrom> {
           ),
         );
       }
-      Navigator.of(context).pop();
     }
   }
 }

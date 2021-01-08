@@ -3,6 +3,7 @@ import 'package:password_manager/helper/account_image_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/list_account_data.dart';
+import '../models/account_data.dart';
 import '../helper/url_helper.dart';
 
 import '../widgets/add_account_screen/add_account_form.dart';
@@ -10,6 +11,7 @@ import '../widgets/account_image.dart';
 
 class AddAccountScreen extends StatefulWidget {
   static final routeName = 'add-account-screen';
+
   @override
   _AddAccountScreenState createState() => _AddAccountScreenState();
 }
@@ -17,9 +19,12 @@ class AddAccountScreen extends StatefulWidget {
 class _AddAccountScreenState extends State<AddAccountScreen> {
   String imageUrl = '';
   bool isLoading = false;
+  AccountData currentUserAccount;
 
   @override
   Widget build(BuildContext context) {
+    currentUserAccount = ModalRoute.of(context).settings.arguments;
+    imageUrl = currentUserAccount.imageUrl ?? '';
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -33,11 +38,16 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                     width: 40,
                   )
                 : AccountImage(imageUrl),
-            Text('Add Account'),
+            Text('Account'),
           ],
         ),
       ),
-      body: AddAccountFrom(setAccountIcon, saveAccount),
+      body: AddAccountFrom(
+        setAccountIcon: setAccountIcon,
+        saveAccount: saveAccount,
+        updateAccount: updateAccount,
+        currentUserAccount: currentUserAccount,
+      ),
     );
   }
 
@@ -64,13 +74,39 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
     String about,
   }) async {
     try {
-      Provider.of<ListAccountData>(context, listen: false).addAccount(
+      await Provider.of<ListAccountData>(context, listen: false).addAccount(
         url: url,
         username: username,
         email: email,
         password: password,
         about: about,
         imageUrl: imageUrl,
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> updateAccount({
+    AccountData oldAccount,
+    String url,
+    String username,
+    String email,
+    String password,
+    String about,
+  }) async {
+    AccountData newAccount = AccountData(
+      url: url,
+      username: username,
+      email: email,
+      password: password,
+      about: about,
+      imageUrl: imageUrl,
+    );
+    try {
+      await Provider.of<ListAccountData>(context, listen: false).updateAccount(
+        oldAccount,
+        newAccount,
       );
     } catch (e) {
       throw e;
