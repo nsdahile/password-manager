@@ -10,6 +10,7 @@ import '../widgets/list_accout_screen/accounts_list.dart';
 import '../widgets/drawer.dart';
 
 class ListAccountScreen extends StatelessWidget {
+  static final routeName = '/list-account-screen';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

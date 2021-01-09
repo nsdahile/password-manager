@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../screens/export_backup_screen.dart';
 import '../screens/import_backup_screen.dart';
+import '../widgets/security.dart';
 
 class AppDrawer extends StatelessWidget {
   final _textStyle = TextStyle(fontSize: 16);
@@ -26,13 +27,7 @@ class AppDrawer extends StatelessWidget {
             ),
             decoration: BoxDecoration(color: Theme.of(context).primaryColor),
           ),
-          ListTile(
-            leading: Icon(Icons.security_rounded),
-            title: Text(
-              'Security',
-              style: _textStyle,
-            ),
-          ),
+          Security(),
           Divider(thickness: 1),
           ListTile(
             leading: Icon(Icons.upload_rounded),
