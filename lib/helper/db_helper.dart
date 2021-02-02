@@ -16,7 +16,6 @@ class DBHelper {
         dbPath,
         version: 1,
         onCreate: (db, version) async {
-          print('Creating new table');
           db.execute(
               'CREATE TABLE ${DBHelper.tableName} (date TEXT PRIMARY KEY, url TEXT, username TEXT, email TEXT, password TEXT, about TEXT, imageUrl TEXT)');
         },

@@ -37,10 +37,10 @@ class _AddAccountFromState extends State<AddAccountFrom> {
     passwordControler.text = widget.currentUserAccount.password;
     confirmPasswordControler.text = passwordControler.text;
     aboutControler.text = widget.currentUserAccount.about;
-    if (widget.currentUserAccount.imageUrl != null &&
-        widget.currentUserAccount.imageUrl.isNotEmpty) {
-      tryedToSetImage = true;
-    }
+    // if (widget.currentUserAccount.imageUrl != null &&
+    //     widget.currentUserAccount.imageUrl.isNotEmpty) {
+    //   tryedToSetImage = true;
+    // }
     if (!isFormEmpty()) isUpdate = true;
   }
 
@@ -161,6 +161,17 @@ class _AddAccountFromState extends State<AddAccountFrom> {
     return false;
   }
 
+  bool isImageUrlCorrect() {
+    if (tryedToSetImage)
+      return true;
+    else if (widget.currentUserAccount.url != null &&
+        widget.currentUserAccount.url != urlControler.text)
+      return false;
+    else if (widget.currentUserAccount.url != null &&
+        widget.currentUserAccount.url == urlControler.text) return true;
+    return false;
+  }
+
   void save() async {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
@@ -181,8 +192,7 @@ class _AddAccountFromState extends State<AddAccountFrom> {
         );
         return;
       }
-      if (!tryedToSetImage ||
-          widget.currentUserAccount.url != urlControler.text) {
+      if (!isImageUrlCorrect()) {
         await widget.setAccountIcon(urlControler.text);
       }
       try {

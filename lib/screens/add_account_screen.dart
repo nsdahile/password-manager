@@ -24,7 +24,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
   @override
   Widget build(BuildContext context) {
     currentUserAccount = ModalRoute.of(context).settings.arguments;
-    imageUrl = currentUserAccount.imageUrl ?? '';
+    imageUrl = getCorrectImageUrl;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -51,13 +51,26 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
     );
   }
 
+  String get getCorrectImageUrl {
+    if ((imageUrl == null || imageUrl.isEmpty) &&
+        currentUserAccount.imageUrl != null &&
+        currentUserAccount.url.isNotEmpty) {
+      //if image url is empty and current user account url is not empty
+      return currentUserAccount.imageUrl;
+    } else if (imageUrl != null && imageUrl.isNotEmpty) {
+      // if image url is not empty
+      return imageUrl;
+    }
+
+    return '';
+  }
+
   void setAccountIcon(String webUrl) async {
     setState(() => isLoading = true);
     webUrl = UrlHellper.correctUrl(webUrl);
 
     try {
-      var url = await AccountImageHelper.getIcon(webUrl);
-      imageUrl = url;
+      imageUrl = await AccountImageHelper.getIcon(webUrl);
     } catch (err) {
       //error from account image helper
       imageUrl = '';

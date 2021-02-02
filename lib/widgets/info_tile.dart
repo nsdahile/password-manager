@@ -86,14 +86,19 @@ class InfoTile extends StatelessWidget {
     }
   }
 
-  void _copyToClipboard(BuildContext context) {
-    FlutterClipboard.copy(value).then((_) {
+  void _copyToClipboard(BuildContext context) async {
+    var massage = '$label copyed to clipboard';
+    try {
+      await FlutterClipboard.copy(value).then((_) {});
+    } catch (e) {
+      massage = 'Unable to copy';
+    } finally {
       Scaffold.of(context).showSnackBar(
         SnackBar(
-          content: Text('$label copyed to clipboard'),
+          content: Text(massage),
           behavior: SnackBarBehavior.floating,
         ),
       );
-    });
+    }
   }
 }

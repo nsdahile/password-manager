@@ -24,6 +24,7 @@ class _AccountTileState extends State<AccountTile> {
       key: ValueKey(widget.account.date),
       background: DismissibleBackground(),
       direction: DismissDirection.endToStart,
+      confirmDismiss: confirmDismiss,
       onDismissed: deleteAccount,
       child: Card(
         child: ListTile(
@@ -40,6 +41,40 @@ class _AccountTileState extends State<AccountTile> {
         ),
       ),
     );
+  }
+
+  Future<bool> confirmDismiss(_) async {
+    bool isResponseDelete = false;
+    await showDialog(
+      context: context,
+      child: AlertDialog(
+        title: Text('Delete'),
+        content: Text('Are you sure you want to delete this account.'),
+        actions: [
+          FlatButton(
+            child: Text(
+              'NO',
+              style: TextStyle(color: Theme.of(context).accentColor),
+            ),
+            onPressed: () {
+              isResponseDelete = false;
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text(
+              'YES',
+              style: TextStyle(color: Theme.of(context).accentColor),
+            ),
+            onPressed: () {
+              isResponseDelete = true;
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+    return isResponseDelete;
   }
 
   void openShowAccountDetailsScreen() {

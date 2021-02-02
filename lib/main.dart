@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.grey[800],
           accentColor: Colors.amber,
           appBarTheme: ThemeData.light().appBarTheme.copyWith(
-                textTheme: TextTheme(
+                textTheme: const TextTheme(
                   headline6: TextStyle(
                     fontFamily: 'Lobster',
                     fontSize: 25,
@@ -43,8 +43,10 @@ class MyApp extends StatelessWidget {
           future: AppLockHelper.hasPasscode(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(
-                child: CircularProgressIndicator(),
+              return Scaffold(
+                body: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             else if (snapshot.data) {
               return PassCodeScreen();
