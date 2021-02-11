@@ -9,11 +9,11 @@ A mobile app, which save account details.
 - Backup available
 
 ## Download app
-### Android app
-[All device app-release.zip](https://github.com/nsdahile/password-manager/files/5965203/app-release.zip)
+### Android app 
+[All device app-release.zip](https://github.com/nsdahile/password-manager/files/5966135/app-release.zip)
 
-[app-arm64-v8a-release.zip](https://github.com/nsdahile/password-manager/files/5965201/app-arm64-v8a-release.zip)
+[app-arm64-v8a-release.zip](https://github.com/nsdahile/password-manager/files/5966132/app-arm64-v8a-release.zip)
 
-[app-x86_64-release.zip](https://github.com/nsdahile/password-manager/files/5965205/app-x86_64-release.zip)
+[app-x86_64-release.zip](https://github.com/nsdahile/password-manager/files/5966136/app-x86_64-release.zip)
 
-[app-armeabi-v7a-release.zip](https://github.com/nsdahile/password-manager/files/5965202/app-armeabi-v7a-release.zip)
+[app-armeabi-v7a-release.zip](https://github.com/nsdahile/password-manager/files/5966134/app-armeabi-v7a-release.zip)
