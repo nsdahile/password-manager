@@ -31,14 +31,14 @@ class EncryptionHelper {
   }
 
   static Future<String> encript(String str) async {
-    EncryptionHelper.setKey();
+    await EncryptionHelper.setKey();
     final cryptor = new PlatformStringCryptor();
     final String encrypted = await cryptor.encrypt(str, EncryptionHelper._key);
     return encrypted;
   }
 
   static Future<String> decrypt({@required String str, String key}) async {
-    EncryptionHelper.setKey();
+    await EncryptionHelper.setKey();
     final cryptor = new PlatformStringCryptor();
     try {
       final String decrypted =

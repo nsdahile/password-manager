@@ -6,13 +6,24 @@ import '../widgets/info_tile.dart';
 import '../widgets/account_image.dart';
 
 import '../models/account_data.dart';
+import '../helper/encryption_helper.dart';
 
-class ShowAccountDetailsScreen extends StatelessWidget {
+class ShowAccountDetailsScreen extends StatefulWidget {
   static final routeName = 'show-website-details';
+
+  @override
+  _ShowAccountDetailsScreenState createState() =>
+      _ShowAccountDetailsScreenState();
+}
+
+class _ShowAccountDetailsScreenState extends State<ShowAccountDetailsScreen> {
+  var decryptedPassword = '';
+  bool isPasswordDecrypted = false;
 
   @override
   Widget build(BuildContext context) {
     var account = ModalRoute.of(context).settings.arguments as AccountData;
+    decryptPassword(account.password);
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(
@@ -49,7 +60,7 @@ class ShowAccountDetailsScreen extends StatelessWidget {
             InfoTile(label: 'Email', value: getValue(account.email)),
             InfoTile(
               label: 'Password',
-              value: getValue(account.password),
+              value: decryptedPassword,
               isPassword: true,
             ),
             InfoTile(label: 'About', value: getValue(account.about)),
@@ -61,6 +72,15 @@ class ShowAccountDetailsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> decryptPassword(String encryptedPassword) async {
+    if (isPasswordDecrypted) return;
+    var pass = await EncryptionHelper.decrypt(str: encryptedPassword);
+    setState(() {
+      decryptedPassword = pass;
+    });
+    isPasswordDecrypted = true;
   }
 
   String getValue(String value) {
