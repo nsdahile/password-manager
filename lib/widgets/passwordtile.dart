@@ -9,12 +9,10 @@ class PasswordTile extends StatefulWidget {
 
 class _PasswordTileState extends State<PasswordTile> {
   bool isHidden = true;
-  // String password = '';
 
   @override
   void initState() {
     super.initState();
-    // decryptPassword();
   }
 
   @override
@@ -51,9 +49,4 @@ class _PasswordTileState extends State<PasswordTile> {
       isHidden = !isHidden;
     });
   }
-
-  // void decryptPassword() async {
-  //   password = await EncryptionHelper.decrypt(str: widget.value);
-  //   setState(() {});
-  // }
 }

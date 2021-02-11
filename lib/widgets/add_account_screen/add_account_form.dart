@@ -137,6 +137,7 @@ class _AddAccountFromState extends State<AddAccountFrom> {
                   labelText: 'About',
                   icon: Icon(Icons.short_text),
                 ),
+                textCapitalization: TextCapitalization.sentences,
                 controller: aboutControler,
               ),
               Padding(
