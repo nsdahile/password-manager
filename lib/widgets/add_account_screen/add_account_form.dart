@@ -205,6 +205,7 @@ class _AddAccountFromState extends State<AddAccountFrom> {
             ),
           ),
         );
+        setState(() => isLoading = false);
         return;
       }
       if (!isImageUrlCorrect()) {
