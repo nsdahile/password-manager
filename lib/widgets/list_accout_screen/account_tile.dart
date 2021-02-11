@@ -92,6 +92,7 @@ class _AccountTileState extends State<AccountTile> {
     } catch (e) {
       massage = 'Delete Failed';
     } finally {
+      Scaffold.of(context).hideCurrentSnackBar();
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(

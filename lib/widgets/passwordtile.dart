@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../helper/encryption_helper.dart';
+
 class PasswordTile extends StatefulWidget {
   final String value;
   PasswordTile(this.value);
@@ -9,6 +11,14 @@ class PasswordTile extends StatefulWidget {
 
 class _PasswordTileState extends State<PasswordTile> {
   bool isHidden = true;
+  String password = '';
+
+  @override
+  void initState() {
+    super.initState();
+    decryptPassword();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -24,7 +34,7 @@ class _PasswordTileState extends State<PasswordTile> {
         ),
         IconButton(
           icon: Icon(
-            Icons.remove_red_eye_rounded,
+            isHidden ? Icons.visibility_rounded : Icons.visibility_off_rounded,
           ),
           splashColor: Theme.of(context).accentColor,
           onPressed: changeHiddenState,
@@ -34,13 +44,18 @@ class _PasswordTileState extends State<PasswordTile> {
   }
 
   String get getValue {
-    if (isHidden) return '●' * widget.value.length;
-    return widget.value;
+    if (isHidden) return '●' * password.length;
+    return password;
   }
 
   void changeHiddenState() {
     setState(() {
       isHidden = !isHidden;
     });
+  }
+
+  void decryptPassword() async {
+    password = await EncryptionHelper.decrypt(str: widget.value);
+    setState(() {});
   }
 }

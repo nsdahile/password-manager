@@ -55,7 +55,7 @@ class InfoTile extends StatelessWidget {
     if (!isPassword)
       return Text(
         value,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
         ),

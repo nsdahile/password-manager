@@ -5,6 +5,9 @@ import 'package:flutter_document_picker/flutter_document_picker.dart';
 
 import '../helper/backup_helper.dart';
 import '../helper/db_helper.dart';
+import '../helper/encryption_helper.dart';
+
+// import '../models/encription_exception.dart';
 
 import '../providers/list_account_data.dart';
 
@@ -31,6 +34,14 @@ class ImportBackupScreenBody extends StatefulWidget {
 class _ImportBackupScreenBodyState extends State<ImportBackupScreenBody> {
   var fileName = '';
   var filePath = '';
+  var keyController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    keyController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -39,52 +50,69 @@ class _ImportBackupScreenBodyState extends State<ImportBackupScreenBody> {
           vertical: 15,
           horizontal: 15,
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            InfoTile(label: 'File location', value: filePath),
-            InfoTile(label: 'File name', value: fileName),
-            RaisedButton(
-              onPressed: pickFile,
-              child: Text('Select File'),
-            ),
-            RaisedButton(
-              onPressed: importBackup,
-              child: Text('Import Backup'),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InfoTile(label: 'File location', value: filePath),
+              InfoTile(label: 'File name', value: fileName),
+              TextField(
+                decoration: InputDecoration(labelText: 'Key'),
+                controller: keyController,
+              ),
+              RaisedButton(
+                onPressed: pickFile,
+                child: Text('Select File'),
+              ),
+              RaisedButton(
+                onPressed: importBackup,
+                child: Text('Import Backup'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   void importBackup() async {
+    FocusScope.of(context).unfocus();
     var massage = 'Import Successful';
     try {
       if (fileName.isEmpty || filePath.isEmpty) {
         massage = 'Please select file';
+      } else if (keyController.text == null || keyController.text.isEmpty) {
+        massage = 'Please enter key';
       } else {
         //getting content of file
         var contentList =
             await BackupHelper.databaseImportBackup(filePath: filePath);
         //inserting accounts in database
-        contentList.forEach((accountList) {
-          DBHelper.insert(
-            url: accountList[0],
-            username: accountList[1],
-            email: accountList[2],
-            password: accountList[3],
-            about: accountList[4],
-            imageUrl: accountList[5],
-            date: DateTime.parse(accountList[6]),
-          );
-        });
+        for (var accountList in contentList) {
+          var decrypedPassword;
+          try {
+            decrypedPassword =
+                await decryptThenEncrypt(accountList[3], keyController.text);
+            await DBHelper.insert(
+              url: accountList[0],
+              username: accountList[1],
+              email: accountList[2],
+              password: decrypedPassword,
+              about: accountList[4],
+              imageUrl: accountList[5],
+              date: DateTime.parse(accountList[6]),
+            );
+          } catch (e) {
+            massage = e.massage;
+            break;
+          }
+        }
         //notifying all accounts list listening screens
-        Provider.of<ListAccountData>(context, listen: false)
+        await Provider.of<ListAccountData>(context, listen: false)
             .refreshFromDBNotifyListener();
       }
-    } catch (e) {
+    } catch (err) {
       massage = 'Unable to import file';
     } finally {
       Scaffold.of(context).showSnackBar(
@@ -93,6 +121,18 @@ class _ImportBackupScreenBodyState extends State<ImportBackupScreenBody> {
           behavior: SnackBarBehavior.floating,
         ),
       );
+    }
+  }
+
+  Future<String> decryptThenEncrypt(String password, String oldKey) async {
+    if (await EncryptionHelper.getKey() == oldKey) return password;
+    try {
+      var decryptedPassword =
+          await EncryptionHelper.decrypt(str: password, key: oldKey);
+      var encryptedPassword = await EncryptionHelper.encript(decryptedPassword);
+      return encryptedPassword;
+    } catch (err) {
+      throw (err);
     }
   }
 

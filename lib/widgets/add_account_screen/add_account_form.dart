@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../helper/encryption_helper.dart';
+
 import '../../models/account_data.dart';
 
 class AddAccountFrom extends StatefulWidget {
@@ -27,6 +29,7 @@ class _AddAccountFromState extends State<AddAccountFrom> {
   final aboutControler = TextEditingController();
   var isUpdate = false;
   var tryedToSetImage = false;
+  var isLoading = false;
 
   @override
   void initState() {
@@ -34,14 +37,11 @@ class _AddAccountFromState extends State<AddAccountFrom> {
     urlControler.text = widget.currentUserAccount.url;
     usernameControler.text = widget.currentUserAccount.username;
     emailControler.text = widget.currentUserAccount.email;
-    passwordControler.text = widget.currentUserAccount.password;
+    passwordControler.text = '';
     confirmPasswordControler.text = passwordControler.text;
     aboutControler.text = widget.currentUserAccount.about;
-    // if (widget.currentUserAccount.imageUrl != null &&
-    //     widget.currentUserAccount.imageUrl.isNotEmpty) {
-    //   tryedToSetImage = true;
-    // }
     if (!isFormEmpty()) isUpdate = true;
+    setPassword();
   }
 
   @override
@@ -142,13 +142,25 @@ class _AddAccountFromState extends State<AddAccountFrom> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: RaisedButton(
-                    child: Text(isUpdate ? 'Update' : 'Save'), onPressed: save),
+                  child: Text(isUpdate ? 'Update' : 'Save'),
+                  onPressed: isLoading ? null : save,
+                ),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void setPassword() async {
+    if (widget.currentUserAccount.password == null ||
+        widget.currentUserAccount.password.isEmpty) return;
+    passwordControler.text =
+        await EncryptionHelper.decrypt(str: widget.currentUserAccount.password);
+    setState(() {
+      confirmPasswordControler.text = passwordControler.text;
+    });
   }
 
   bool isFormEmpty() {
@@ -173,7 +185,9 @@ class _AddAccountFromState extends State<AddAccountFrom> {
   }
 
   void save() async {
+    FocusScope.of(context).unfocus();
     if (formKey.currentState.validate()) {
+      setState(() => isLoading = true);
       formKey.currentState.save();
       if (isFormEmpty()) {
         Scaffold.of(context).showSnackBar(
@@ -202,7 +216,7 @@ class _AddAccountFromState extends State<AddAccountFrom> {
             url: urlControler.text,
             username: usernameControler.text,
             email: emailControler.text,
-            password: passwordControler.text,
+            password: await EncryptionHelper.encript(passwordControler.text),
             about: aboutControler.text,
           );
           Navigator.of(context).pop();
@@ -213,7 +227,7 @@ class _AddAccountFromState extends State<AddAccountFrom> {
             url: urlControler.text,
             username: usernameControler.text,
             email: emailControler.text,
-            password: passwordControler.text,
+            password: await EncryptionHelper.encript(passwordControler.text),
             about: aboutControler.text,
           );
           Navigator.of(context).pop();
@@ -234,6 +248,7 @@ class _AddAccountFromState extends State<AddAccountFrom> {
           ),
         );
       }
+      setState(() => isLoading = false);
     }
   }
 }

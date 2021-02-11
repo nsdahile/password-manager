@@ -10,6 +10,9 @@ class BackupHelper {
     @required List<List<String>> accountList,
     String fileName = 'password-manager.csv',
   }) async {
+    if (!fileName.endsWith('.csv')) {
+      fileName = fileName + '.csv';
+    }
     try {
       var targetLocation = path.join(targetFolderPath, fileName);
       var file = File(targetLocation);

@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Colors.grey[800],
           accentColor: Colors.amber,
+          cursorColor: Colors.black,
           appBarTheme: ThemeData.light().appBarTheme.copyWith(
                 textTheme: const TextTheme(
                   headline6: TextStyle(
@@ -36,7 +37,6 @@ class MyApp extends StatelessWidget {
               ),
           buttonTheme: ButtonThemeData(
             buttonColor: Colors.amber,
-            textTheme: ButtonTextTheme.primary,
           ),
         ),
         home: FutureBuilder(
